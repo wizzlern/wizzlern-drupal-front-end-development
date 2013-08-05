@@ -1,0 +1,19 @@
+name = Base 2013
+description = A base theme used for training purposes.
+package = Wizzlern
+version = VERSION
+core = 7.x
+
+stylesheets[all][] = css/foundation.css
+stylesheets[all][] = css/ligature.css
+stylesheets[all][] = css/main.css
+
+regions[navigation] = Navigation
+regions[highlighted] = Highlighted
+regions[featured] = Featured
+regions[content] = Content
+regions[footer] = Footer
+
+settings[toggle_logo] = 0
+
+scripts[] = js/modernizr.foundation.js

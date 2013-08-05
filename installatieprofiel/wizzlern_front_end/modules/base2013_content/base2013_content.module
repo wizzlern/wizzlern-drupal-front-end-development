@@ -1,0 +1,272 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Generates content for the Base 2013 Theme
+ *
+ * @name Base 2013 Content
+ * @author Philip Vergunst
+ */
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function base2013_content_block_view_alter(&$data, $block) {
+  if ($block->module . $block->delta == 'systemmain-menu') {
+    $data['content'] = array(
+      '#markup' => _base2013_content_menu_tree_render($data['content']),
+    );
+  }
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function base2013_content_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if (!empty($blocks['views']['base2013_intro-block'])) {
+    $blocks['views']['base2013_intro-block']['visibility'] = BLOCK_VISIBILITY_LISTED;
+    $blocks['views']['base2013_intro-block']['pages'] = '<front>';
+    $blocks['views']['base2013_intro-block']['region'] = 'highlighted';
+    $blocks['views']['base2013_intro-block']['status'] = 1;
+  }
+  if (!empty($blocks['views']['base2013_thumbs-block'])) {
+    $blocks['views']['base2013_thumbs-block']['visibility'] = BLOCK_VISIBILITY_LISTED;
+    $blocks['views']['base2013_thumbs-block']['pages'] = '<front>';
+    $blocks['views']['base2013_thumbs-block']['region'] = 'featured';
+    $blocks['views']['base2013_thumbs-block']['status'] = 1;
+  }
+  if (!empty($blocks['menu']['menu_base2013_social_menu'])) {
+    $blocks['menu']['menu_base2013_social_menu']['region'] = 'footer';
+    $blocks['menu']['menu_base2013_social_menu']['weight'] = 10;
+    $blocks['menu']['menu_base2013_social_menu']['status'] = 1;
+    $blocks['menu']['menu_base2013_social_menu']['title'] = '<none>';
+  }
+  if (!empty($blocks['system']['main-menu'])) {
+    $blocks['system']['main-menu']['region'] = 'navigation';
+    $blocks['system']['main-menu']['weight'] = 10;
+    $blocks['system']['main-menu']['status'] = 1;
+    $blocks['system']['main-menu']['title'] = '<none>';
+  }
+  if (!empty($blocks['system']['powered-by'])) {
+    $blocks['system']['powered-by']['region'] = -1;
+    $blocks['system']['powered-by']['status'] = 0;
+  }
+  if (!empty($blocks['system']['navigation'])) {
+    $blocks['system']['navigation']['region'] = -1;
+    $blocks['system']['navigation']['status'] = 0;
+  }
+  if (!empty($blocks['search']['form'])) {
+    $blocks['search']['form']['region'] = -1;
+    $blocks['search']['form']['status'] = 0;
+  }
+  if (!empty($blocks['user']['login'])) {
+    $blocks['user']['login']['region'] = -1;
+    $blocks['user']['login']['status'] = 0;
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function base2013_content_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'base2013_content'),
+  );
+}
+
+/**
+ * Implements hook_views_default_views().
+ */
+function base2013_content_views_default_views() {
+  $views = array();
+
+  $view = new view();
+  $view->name = 'base2013_thumbs';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Base2013 Thumbs';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Latest Photos by Our Members';
+  $handler->display->display_options['css_class'] = 'clearfix';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '6';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'two columns';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_thumb_image']['id'] = 'field_thumb_image';
+  $handler->display->display_options['fields']['field_thumb_image']['table'] = 'field_data_field_thumb_image';
+  $handler->display->display_options['fields']['field_thumb_image']['field'] = 'field_thumb_image';
+  $handler->display->display_options['fields']['field_thumb_image']['label'] = '';
+  $handler->display->display_options['fields']['field_thumb_image']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_thumb_image']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['field_thumb_image']['alter']['alt'] = '[title]';
+  $handler->display->display_options['fields']['field_thumb_image']['alter']['link_class'] = 'th';
+  $handler->display->display_options['fields']['field_thumb_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_thumb_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_thumb_image']['settings'] = array(
+    'image_style' => 'base2013_thumb',
+    'image_link' => '',
+  );
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'base2013_thumb' => 'base2013_thumb',
+  );
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block');
+  $views[$view->name] = $view;
+
+  $view = new view();
+  $view->name = 'base2013_intro';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Base2013 Intro';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['css_class'] = 'clearfix';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '3';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'four columns';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_type'] = 'h3';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Body */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'base2013_intro' => 'base2013_intro',
+  );
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block');
+  $views[$view->name] = $view;
+
+  return $views;
+}
+
+/**
+ *
+ */
+function _base2013_content_menu_tree_render($tree, $depth = 0) {
+  $items = array();
+
+  $return_list = ($depth);
+
+  foreach (element_children($tree) as $mlid) {
+    $element = $tree[$mlid];
+    $class = array();
+    $link = l($element['#title'], $element['#href'], $element['#localized_options']);
+    $below = '';
+
+    // Append active class.
+    if (($element['#href'] == $_GET['q']
+      || ($element['#href'] == '<front>' && drupal_is_front_page()))) {
+      $class[] = 'active';
+    }
+
+    if ($element['#below']) {
+      $below = _base2013_content_menu_tree_render($element['#below'], $depth + 1);
+    }
+
+    if ($depth || $element['#below']) {
+      $class[] = 'has-flyout';
+    }
+
+    $items[] = array(
+      'data' => $link . $below,
+      'class' => $class,
+    );
+  }
+
+  $return = theme('item_list__main_menu', array(
+    'items' => $items,
+    'attributes' => array(
+      'id' => 'menu-header',
+      'class' => $depth ? array('flyout') : array('nav-bar', 'horizontal'),
+    ),
+  ));
+  return str_replace(array('<div class="item-list"><ul', '</ul></div>'), array('<ul', '</ul>'), $return);
+}

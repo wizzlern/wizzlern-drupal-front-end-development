@@ -1,0 +1,258 @@
+<?php
+
+/**
+ * @file
+ * Generates content for the Base 2013 Theme
+ *
+ * @name Base 2013 Content
+ * @author Philip Vergunst
+ */
+
+/**
+ *
+ */
+function base2013_content_install() {
+
+  $style = image_style_save(array('name' => 'base2013_thumb'));
+  $effect = array(
+    'name' => 'image_scale_and_crop',
+    'data' => array(
+      'width' => 100,
+      'height' => 100,
+    ),
+    'isid' => $style['isid'],
+  );
+  image_effect_save($effect);
+
+  if (!in_array('base2013_thumb', node_type_get_names())) {
+    $type = array(
+      'type' => 'base2013_thumb',
+      'name' => st('Base 2013 Thumb'),
+      'base' => 'node_content',
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+      'title_label' => 'Title'
+    );
+
+    $type = node_type_set_defaults($type);
+    node_type_save($type);
+  }
+
+  $field_name = 'field_thumb_image';
+  // Check if our field is not already created.
+  if (!field_info_field($field_name)) {
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'image',
+    );
+    field_create_field($field);
+
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'label' => 'Image',
+      'bundle' => 'base2013_thumb',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+      'settings' => array(),
+      'widget' => array(
+        'type' => 'image_image',
+      ),
+    );
+    field_create_instance($instance);
+  }
+
+  $path = drupal_get_path('module', 'base2013_content') . '/images/thumbs';
+  $files = file_scan_directory($path, '/.*\.jpg$/');
+
+  foreach ($files as $file) {
+    // Create managed File object and associate with Image field.
+    $file = (object) $file;
+    $file->status = 1;
+    $file->uid = $GLOBALS['user']->uid;
+    $file->filemime = file_get_mimetype($file->uri);
+    $file = file_copy($file, 'public://');
+
+    $node = new stdClass();
+    $node->title = $file->name;
+    $node->type = 'base2013_thumb';
+    node_object_prepare($node);
+    $node->language = LANGUAGE_NONE;
+    $node->uid = $GLOBALS['user']->uid;
+    $node->status = 1;
+    $node->promote = 0;
+    $node->comment = 1;
+
+    // Term reference (taxonomy) field
+    $node->{$field_name}[LANGUAGE_NONE][0] = (array)$file;
+
+    $node = node_submit($node); // Prepare node for saving
+    node_save($node);
+  }
+
+
+  if (!in_array('base2013_intro', node_type_get_names())) {
+    $type = array(
+      'type' => 'base2013_intro',
+      'name' => st('Base 2013 Intro'),
+      'base' => 'node_content',
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+      'title_label' => 'Title'
+    );
+
+    $type = node_type_set_defaults($type);
+    node_add_body_field($type);
+    node_type_save($type);
+  }
+
+  $intros = array(
+    array(
+      'title' => t('Photo Community'),
+      'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra, lacus id interdum ultrices, elit metus semper tellus, vel lacinia libero purus vitae risus.',
+    ),
+    array(
+      'title' => t('Upload Photos'),
+      'content' => 'Vivamus tortor tellus, rutrum sit amet mollis vel, imperdiet consectetur orci. Mauris pharetra congue enim, et sagittis lectus congue ut. Cum sociis natoque penatibus.',
+    ),
+    array(
+      'title' => t('Video Tutorials'),
+      'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
+    ),
+  );
+
+  foreach ($intros as $intro) {
+    $node = new stdClass();
+    $node->title = $intro['title'];
+    $node->type = 'base2013_intro';
+    node_object_prepare($node);
+    $node->language = LANGUAGE_NONE;
+    $node->uid = $GLOBALS['user']->uid;
+    $node->status = 1;
+    $node->promote = 0;
+    $node->comment = 1;
+
+    // Term reference (taxonomy) field
+    $node->body[LANGUAGE_NONE][0] = array(
+      'format' => filter_default_format(),
+      'value' => $intro['content'],
+    );
+    $node = node_submit($node); // Prepare node for saving
+    node_save($node);
+  }
+
+
+
+  if (!in_array('article', node_type_get_names())) {
+    $type = array(
+      'type' => 'article',
+      'name' => st('Article'),
+      'base' => 'node_content',
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+      'title_label' => 'Title'
+    );
+
+    $type = node_type_set_defaults($type);
+    node_add_body_field($type);
+    node_type_save($type);
+  }
+
+  $articles = array(
+    array(
+      'title' => t('Lorem Ipsum'),
+      'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra, lacus id interdum ultrices, elit metus semper tellus, vel lacinia libero purus vitae risus.',
+    ),
+    array(
+      'title' => t('Lorem Ipsum'),
+      'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra, lacus id interdum ultrices, elit metus semper tellus, vel lacinia libero purus vitae risus.',
+    ),
+  );
+
+  foreach ($articles as $article) {
+    $node = new stdClass();
+    $node->title = $article['title'];
+    $node->type = 'article';
+    node_object_prepare($node);
+    $node->language = LANGUAGE_NONE;
+    $node->uid = $GLOBALS['user']->uid;
+    $node->status = 1;
+    $node->promote = 1;
+    $node->comment = 1;
+
+    // Term reference (taxonomy) field
+    $node->body[LANGUAGE_NONE][0] = array(
+      'format' => filter_default_format(),
+      'value' => $article['content'],
+    );
+    $node = node_submit($node); // Prepare node for saving
+    node_save($node);
+  }
+
+
+  $menu = array(
+    'menu_name' => 'menu_base2013_social_menu',
+    'title' => 'Base 2013 Social Menu',
+    'description' => 'Base 2013 Social Menu',
+  );
+  menu_save($menu);
+
+  $links = array(
+    array(
+      'link_title' => 'Twitter',
+      'link_path' => 'http://twitter.com/',
+    ),
+    array(
+      'link_title' => 'Facebook',
+      'link_path' => 'http://facebook.com/',
+    ),
+    array(
+      'link_title' => 'Pinterest',
+      'link_path' => 'http://pinterest.com/',
+    ),
+    array(
+      'link_title' => 'Instagram',
+      'link_path' => 'http://instagram.com/',
+    ),
+  );
+
+  foreach ($links as $weight => $item) {
+    $item += array(
+      'menu_name' => $menu['menu_name'],
+      'weight' => $weight,
+      'expanded' => 0,
+    );
+    menu_link_save($item);
+  }
+
+  for ($i = 1; $i < 5; $i++) {
+    $item = array(
+      'menu_name' => 'main-menu',
+      'weight' => $i,
+      'expanded' => 1,
+      'link_title' => 'Menu item ' . $i,
+      'link_path' => 'node/' . $i,
+    );
+    menu_link_save($item);
+  }
+  $plid = db_select('menu_links', 'ml')
+    ->condition('ml.link_title', 'Menu item 1')
+    ->fields('ml', array('mlid'))
+    ->execute()
+    ->fetchField();
+  for ($i = 1; $i < 5; $i++) {
+    $item = array(
+      'menu_name' => 'main-menu',
+      'weight' => $i,
+      'expanded' => 1,
+      'link_title' => 'Sub-menu item ' . $i,
+      'link_path' => 'node/' . $i,
+      'plid' => $plid,
+    );
+    menu_link_save($item);
+  }
+}

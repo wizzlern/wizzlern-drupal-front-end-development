@@ -1,0 +1,10 @@
+; $Id$
+name = Base 2013 Content
+description = Generates content for the Base 2013 Theme
+version = VERSION
+core = 7.x
+package = Wizzlern
+
+dependencies[] = menu
+dependencies[] = views
+dependencies[] = image

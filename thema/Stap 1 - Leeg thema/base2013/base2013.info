@@ -1,0 +1,5 @@
+name = Base 2013
+description = A base theme used for training purposes.
+package = Wizzlern
+version = VERSION
+core = 7.x
