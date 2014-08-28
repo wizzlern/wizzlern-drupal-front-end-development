@@ -5,11 +5,11 @@
  */
 
 /**
- * Implements hook_form_FORM_ID_alter() for install_configure_form().
+ * Implements hook_form_FORM_ID_alter().
  *
  * Allows the profile to alter the site configuration form.
  */
 function wizzlern_frontend_form_install_configure_form_alter(&$form, $form_state) {
-  // Pre-populate the site name with the server name.
-  $form['site_information']['site_name']['#default_value'] = t('Base 2013');
+  // Deny access to the site name field.
+  $form['site_information']['site_name']['#access'] = FALSE;
 }

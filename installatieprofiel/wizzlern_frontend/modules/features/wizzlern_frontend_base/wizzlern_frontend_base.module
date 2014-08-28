@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Wizzlern frontend base feature.
+ */
+
+include_once 'wizzlern_frontend_base.features.inc';
