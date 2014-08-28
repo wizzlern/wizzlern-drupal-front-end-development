@@ -9,7 +9,7 @@
  *
  * Allows the profile to alter the site configuration form.
  */
-function wizzlern_front_end_form_install_configure_form_alter(&$form, $form_state) {
+function wizzlern_frontend_form_install_configure_form_alter(&$form, $form_state) {
   // Pre-populate the site name with the server name.
   $form['site_information']['site_name']['#default_value'] = t('Base 2013');
 }
