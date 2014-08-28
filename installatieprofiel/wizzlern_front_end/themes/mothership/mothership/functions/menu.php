@@ -38,34 +38,38 @@ function mothership_menu_link(array $variables) {
     $remove[] .= "active";
   }
 
-  if($remove){
-    $variables['element']['#attributes']['class'] = array_diff($variables['element']['#attributes']['class'],$remove);
+  if(!empty($variables['element']['#attributes']['class'])){
+
+    if($remove){
+        $variables['element']['#attributes']['class'] = array_diff($variables['element']['#attributes']['class'],$remove);
+    }
+
+    //Remove thee menu-mlid-[NUMBER]
+    if(theme_get_setting('mothership_classes_menu_items_mlid')){
+      $variables['element']['#attributes']['class'] = preg_grep('/^menu-mlid-/', $variables['element']['#attributes']['class'], PREG_GREP_INVERT);
+     }
+    //if we wanna remove the class for realz so nozing passes
+    if(theme_get_setting('mothership_classes_menu_items')){
+      unset($variables['element']['#attributes']['class']);
+    }
+
+    //test if we even have to have class defined
+    if($variables['element']['#attributes']['class']){
+  //    dpr($variables['element']['#attributes']['class']);
+    }else{
+      unset($variables['element']['#attributes']['class']);
+    }
   }
 
-  //Remove thee menu-mlid-[NUMBER]
-  if(theme_get_setting('mothership_classes_menu_items_mlid')){  
-    $variables['element']['#attributes']['class'] = preg_grep('/^menu-mlid-/', $variables['element']['#attributes']['class'], PREG_GREP_INVERT);
-  }
-  //if we wanna remove the class for realz so nozing passes
-  if(theme_get_setting('mothership_classes_menu_items')){
-    unset($variables['element']['#attributes']['class']);
-  }
-
-  //test if we even have to have class defined
-  if($variables['element']['#attributes']['class']){
-//    dpr($variables['element']['#attributes']['class']);    
-  }else{
-    unset($variables['element']['#attributes']['class']);
-  }
   $element = $variables['element'];
 
   $sub_menu = '';
 
-  if ($element['#below']) {
+  if (!empty($element['#below'])) {
     $sub_menu = drupal_render($element['#below']);
   }
 //  dpr($variables['element']['#attributes']);
-  
+
   $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
@@ -207,11 +211,8 @@ function mothership_views_mini_pager($vars) {
   $tags = $vars['tags'];
   $element = $vars['element'];
   $parameters = $vars['parameters'];
-  $quantity = $vars['quantity'];
 
   // Calculate various markers within this pager piece:
-  // Middle is used to "center" pages around the current page.
-  $pager_middle = ceil($quantity / 2);
   // current is the page we are currently paged to
   $pager_current = $pager_page_array[$element] + 1;
   // max is the maximum page number
@@ -282,15 +283,20 @@ function mothership_item_list($variables) {
   $title = $variables['title'];
   $type  = $variables['type'];
   $attributes = $variables['attributes'];
+  $output = '';
 
   //get the daddy if its set and add it is item-list-$daddy
   if(isset($variables['daddy'])){
     $wrapperclass = "item-list-" . $variables['daddy'];
   }else{
-    $wrapperclass = "item-list";
+    $wrapperclass = "";
   }
 
-  $output = '<div class="'. $wrapperclass .'">';
+  if(!empty($wrapperclass)){
+    $output = '<div class="'. $wrapperclass .'">';
+  }
+
+
   if (isset($title)) {
     $output .= '<h3>' . $title . '</h3>';
   }
@@ -334,7 +340,9 @@ function mothership_item_list($variables) {
     }
     $output .= "</$type>";
   }
-  $output .= '</div>';
+  if(!empty($wrapperclass)){
+    $output .= '</div>';
+  }
   return $output;
 }
 

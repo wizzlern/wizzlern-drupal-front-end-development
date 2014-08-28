@@ -10,28 +10,32 @@
 
 <?php print $mothership_poorthemers_helper; ?>
 
-<header class="cf" role="banner">
+<header role="banner">
+  <div class="siteinfo">
+    <?php if ($logo): ?>
+      <figure>
+      <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home">
+        <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+      </a>
+      </figure>
+    <?php endif; ?>
 
-  <?php if ($logo): ?>
-    <figure class="logo">
-    <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home">
-      <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-    </a>
-    </figure>
-  <?php endif; ?>
-
-
-  <?php if ($page['header']): ?>
-    <div class="header">
-      <?php print render($page['header']); ?>
-    </div>
-  <?php endif; ?>
-
+    <?php if($site_name OR $site_slogan ): ?>
+    <hgroup>
+      <?php if($site_name): ?>
+        <h1><?php print $site_name; ?></h1>
+      <?php endif; ?>
+      <?php if ($site_slogan): ?>
+        <h2><?php print $site_slogan; ?></h2>
+      <?php endif; ?>
+    </hgroup>
+    <?php endif; ?>
+  </div>
 </header>
 
 
-<div class="page cf">
-
+<div class="page">
+  <div role="main" id="main-content">
 
   <article>
 
@@ -58,8 +62,9 @@
 
   </article>
 
+  </div>
 </div>
 
 <footer role="contentinfo">
-  <?php print render($page['footer']); ?>
+
 </footer>

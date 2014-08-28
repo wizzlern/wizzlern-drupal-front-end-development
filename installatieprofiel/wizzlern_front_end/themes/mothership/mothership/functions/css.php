@@ -5,24 +5,6 @@ function mothership_css_alter(&$css) {
   $mothership_csscore_path = drupal_get_path('theme', 'mothership') . '/css-drupalcore/';
   $mothership_cssmodules_path = drupal_get_path('theme', 'mothership') . '/css-modules/';
 
-/*
-    if(module_exists('field')){
-      $css = drupal_add_css($mothership_csscore_path . 'field.theme.css', array('group' => CSS_SYSTEM));
-      $css = drupal_add_css($mothership_csscore_path . 'field_ui.admin.css', array('group' => CSS_SYSTEM));
-    }
-
-    if(module_exists('openid')){
-      $css = drupal_add_css($mothership_csscore_path . 'openid.base.css', array('group' => CSS_SYSTEM));
-      $css = drupal_add_css($mothership_csscore_path . 'openid.theme.css', array('group' => CSS_SYSTEM));
-    }
-
-    if(module_exists('poll')){
-      $css = drupal_add_css($mothership_csscore_path . 'poll.admin.css', array('group' => CSS_SYSTEM));
-      $css = drupal_add_css($mothership_csscore_path . 'poll.theme.css', array('group' => CSS_SYSTEM));
-    }
-
-*/
-
 
   //book
 	if( theme_get_setting('mothership_css_nuke_book') AND module_exists('book') ) {
@@ -34,19 +16,8 @@ function mothership_css_alter(&$css) {
 	      unset($css[$file]);
 	    }
 	  }
-	
-	}
 
-  //contectual
-  if(theme_get_setting('mothership_css_nuke_contextual') AND module_exists('contextual')){
-    $css = drupal_add_css($mothership_csscore_path . 'contextual.base.css', array('group' => CSS_SYSTEM));
-    $css = drupal_add_css($mothership_csscore_path . 'contextual.theme.css', array('group' => CSS_SYSTEM));
-    foreach ($css as $file => $value) {
-      if (strpos($file, 'contextual.css') !== FALSE) {
-        unset($css[$file]);
-      }
-    }
-  }
+	}
 
   //theme.css
   if(theme_get_setting('mothership_css_nuke_theme')){
@@ -177,7 +148,7 @@ function mothership_css_alter(&$css) {
   }
 
 
-  //Here we go smack all css files into 1 (one) - we like less http request 
+  //Here we go smack all css files into 1 (one) - we like less http request
   if(theme_get_setting('mothership_css_onefile')){
     $theme = drupal_get_path('theme', 'mothership');
     //its all screen honey all screen
@@ -186,7 +157,7 @@ function mothership_css_alter(&$css) {
         $css[$path]['media'] = 'screen';
       }
     }
-    
+
     //grap the css and punch it into one file
     //credits to metaltoad http://www.metaltoad.com/blog/drupal-7-taking-control-css-and-js-aggregation
     uasort($css, 'drupal_sort_css_js');

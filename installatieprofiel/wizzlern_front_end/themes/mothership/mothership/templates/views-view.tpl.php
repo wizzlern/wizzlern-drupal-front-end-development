@@ -1,7 +1,14 @@
 <?php if( theme_get_setting('mothership_poorthemers_helper') ){ ?>
-<!-- views view.tpl.php -->
+<!--
+  views-view.tpl.php
+  display: <?php print $display_id;  ?>
+-->
 <?php } ?>
-<div class="<?php print $classes; ?>">
+
+<?php if(!empty($css_class)){ ?>
+<div class="<?php print $css_class; ?>">
+<?php } ?>
+
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <?php print $title; ?>
@@ -61,7 +68,9 @@
     </div>
   <?php endif; ?>
 
+<?php if(!empty($css_class)){ ?>
 </div> <?php /* class view */ ?>
+<?php } ?>
 <?php if( theme_get_setting('mothership_poorthemers_helper') ){ ?>
 <!-- /views view.tpl.php -->
 <?php } ?>

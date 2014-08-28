@@ -7,7 +7,8 @@
 function NEWTHEME_preprocess_html(&$vars) {
   //  kpr($vars['content']);
 }
-
+*/
+/*
 function NEWTHEME_preprocess_page(&$vars,$hook) {
   //typekit
   //drupal_add_js('http://use.typekit.com/XXX.js', 'external');
@@ -20,11 +21,13 @@ function NEWTHEME_preprocess_page(&$vars,$hook) {
   //  drupal_add_css('http://fonts.googleapis.com/css?family=Bree+Serif','external');
  
 }
-
+*/
+/*
 function NEWTHEME_preprocess_region(&$vars,$hook) {
   //  kpr($vars['content']);
 }
-
+*/
+/*
 function NEWTHEME_preprocess_block(&$vars, $hook) {
   //  kpr($vars['content']);
 
@@ -63,15 +66,23 @@ function NEWTHEME_preprocess_block(&$vars, $hook) {
   }
 
 }
-
+*/
+/*
 function NEWTHEME_preprocess_node(&$vars,$hook) {
   //  kpr($vars['content']);
-}
 
+  // add a nodeblock 
+  // in .info define a region : regions[block_in_a_node] = block_in_a_node 
+  // in node.tpl  <?php if($noderegion){ ?> <?php print render($noderegion); ?><?php } ?>
+  //$vars['block_in_a_node'] = block_get_blocks_by_region('block_in_a_node');
+}
+*/
+/*
 function NEWTHEME_preprocess_comment(&$vars,$hook) {
   //  kpr($vars['content']);
 }
-
+*/
+/*
 function NEWTHEME_preprocess_field(&$vars,$hook) {
   //  kpr($vars['content']);
   //add class to a specific field
@@ -91,8 +102,17 @@ function NEWTHEME_preprocess_field(&$vars,$hook) {
   }
 
 }
-
+*/
+/*
 function NEWTHEME_preprocess_maintenance_page(){
   //  kpr($vars['content']);
 }
 */
+/*
+function NEWTHEME_form_alter(&$form, &$form_state, $form_id) {
+  //if ($form_id == '') {
+  //....
+  //}
+}
+*/
+

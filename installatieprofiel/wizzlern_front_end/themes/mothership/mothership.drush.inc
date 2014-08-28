@@ -99,7 +99,7 @@ function drush_mothership($name = NULL, $machine_name = NULL) {
     '!path' => $subtheme_path,
   )));
   drush_print(dt('Visit your themes settings page and configure it to your liking: !path', array(
-    '!path' => url('admin/appearances/settings/' . $machine_name, array('absolute' => TRUE)),
+    '!path' => url('admin/appearance/settings/' . $machine_name, array('absolute' => TRUE)),
   )));
 }
 

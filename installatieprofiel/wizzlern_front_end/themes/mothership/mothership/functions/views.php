@@ -79,7 +79,7 @@ function mothership_preprocess_views_view_unformatted(&$vars) {
     }
 
    // $vars['classes'][$id][] = '';
-    if ( $vars['classes']  && $vars['classes'][$id] ){
+    if ( $vars['classes']  && array_key_exists($id, $vars['classes']) ){
       $vars['classes_array'][$id] = implode(' ', $vars['classes'][$id]);
     } else {
       $vars['classes_array'][$id] = '';

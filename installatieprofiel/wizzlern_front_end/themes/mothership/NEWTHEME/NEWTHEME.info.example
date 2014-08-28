@@ -52,8 +52,8 @@ settings[mothership_test] = 0
 settings[mothership_nuke_css]= mothership_css_nuke_theme
 settings[mothership_html5] = 1
 settings[mothership_viewport] = 1
-settings[mothership_css_reset] = 1
-settings[mothership_css_reset_html5] = 1
+settings[mothership_css_reset] = 0
+settings[mothership_css_reset_html5] = 0
 settings[mothership_css_default] = 1
 settings[mothership_css_mothershipstyles] = 1
 

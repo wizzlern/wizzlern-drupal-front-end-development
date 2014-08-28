@@ -5,7 +5,7 @@
 //page--[CONTENT TYPE].tpl.php
 ?>
 <?php if( theme_get_setting('mothership_poorthemers_helper') ){ ?>
-<!--page.tpl.php-->
+<!-- page.tpl.php-->
 <?php } ?>
 
 <?php print $mothership_poorthemers_helper; ?>
@@ -42,7 +42,7 @@
 
 <div class="page">
 
-  <div role="main" id="#main-content">
+  <div role="main" id="main-content">
     <?php print render($title_prefix); ?>
     <?php if ($title): ?>
       <h1><?php print $title; ?></h1>
@@ -73,7 +73,7 @@
 
     <?php print render($page['content_post']); ?>
 
-  </div><!--/main-->
+  </div><!-- /main-->
 
   <?php if ($page['sidebar_first']): ?>
     <div class="sidebar-first">
@@ -86,7 +86,7 @@
       <?php print render($page['sidebar_second']); ?>
     </div>
   <?php endif; ?>
-</div><!--/page-->
+</div><!-- /page-->
 
 <footer role="contentinfo">
   <?php print render($page['footer']); ?>

@@ -8,11 +8,11 @@
 function mothership_form_user_login_block_alter(&$form, &$form_state, $form_id) {
   //hide the orignal links
   $form['links']['#access'] = FALSE ;
-
-  //register new account link
-  $form['info']['#markup'] =  l(t('Register'), 'user/register', array('attributes' => array('class' => 'login-register', 'title' => t('Create a new user account'))));
-  $form['info']['#weight'] = -1;
-
+  if(user_register_access()){
+    //register new account link
+    $form['info']['#markup'] =  l(t('Register'), 'user/register', array('attributes' => array('class' => 'login-register', 'title' => t('Create a new user account'))));
+    $form['info']['#weight'] = -1;
+  }
   //yum placeholders
   $form['name']['#attributes']['placeholder'] = $form['name']['#title'];
   $form['pass']['#attributes']['placeholder'] = $form['pass']['#title'];
@@ -26,7 +26,10 @@ adds links from the tabs to the login page
 */
 
 function mothership_form_user_login_alter(&$form, &$form_state, $form_id) {
-  $form['name']['#prefix'] =  '<b>' . l(t('Register a new account'), 'user/register', array('attributes' => array('class' => 'login-register', 'title' => t('Create a new user account')))) . '</b>';
+  if(user_register_access()){
+    $form['name']['#prefix'] =  '<b>' . l(t('Register a new account'), 'user/register', array('attributes' => array('class' => 'login-register', 'title' => t('Create a new user account')))) . '</b>';
+  }
+
   $form['pass']['#suffix'] = '<b>' . l(t('Forgot password?'), 'user/password', array('attributes' => array('class' => 'login-password', 'title' => t('Get a new password')))) . '</b>';
 }
 

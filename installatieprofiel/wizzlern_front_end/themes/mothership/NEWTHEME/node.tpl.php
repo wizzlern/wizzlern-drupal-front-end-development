@@ -3,6 +3,8 @@
 //http://drupalcontrib.org/api/drupal/drupal--modules--node--node.tpl.php
 //node--[CONTENT TYPE].tpl.php
 
+//$content['field_name']['#theme'] = "nomarkup";
+//hide($content['field_name']);
 if ($classes) {
   $classes = ' class="'. $classes . ' "';
 }

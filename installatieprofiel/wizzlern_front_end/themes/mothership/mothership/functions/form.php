@@ -16,7 +16,7 @@ function mothership_form($variables) {
     $element['#attributes']['accept-charset'] = "UTF-8";
   }
 
-	return '<form' . drupal_attributes($element['#attributes']) . ' role="form">' . $element['#children'] . '</form>';
+	return '<form' . drupal_attributes($element['#attributes']) . '>' . $element['#children'] . '</form>';
 
 }
 
@@ -72,8 +72,7 @@ function mothership_form_element($variables) {
     $attributes['class'][] = 'form-disabled';
   }
 
-  //if the form element is reguired add a form-required class
-  if( $element['#required'] ) {
+  if(isset($element['#title']) && $element['#title'] != 'Language' && $element['#required']) {
     $attributes['class'][] = 'form-required';
   }
 

@@ -68,11 +68,33 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
       '#default_value' => theme_get_setting('mothership_js_onefile')
     );
 
-    $form['js']['mothership_js_jquerycdn'] = array(
+    $form['js']['jquery'] = array(
+      '#type'          => 'fieldset',
+      '#title'         => '&#10006; ' .t('jQuery'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#description'   => t('')
+    );
+
+    $form['js']['jquery']['mothership_js_jquery_latest'] = array(
       '#type'          => 'checkbox',
-      '#title'         => t('Replace Drupals local jquery width a CDN ') ,
-      '#description'   => t('use ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'),
+      '#title'         => t('jQuery 1.8.2') ,
+      '#description'   => t('This will have potential problems with Drupal backend. jQuery is located in mothership/js/'),
+      '#default_value' => theme_get_setting('mothership_js_jquery_latest')
+    );
+
+    $form['js']['jquery']['mothership_js_jquerycdn'] = array(
+      '#type'          => 'checkbox',
+      '#title'         => t('Replace Drupals local jquery width a CDN version') ,
+      '#description'   => t('use ajax.googleapis.com/ajax/libs/jquery/[X.X.X]/jquery.min.js'),
       '#default_value' => theme_get_setting('mothership_js_jquerycdn')
+    );
+
+    $form['js']['jquery']['mothership_js_jquerycdn_version'] = array(
+      '#type'          => 'textfield',
+      '#title'         => t('jQuery CDN version'),
+      '#default_value' => theme_get_setting('mothership_js_jquerycdn_version'),
+      '#description'   => t('write the version number fx 1.4.4 or 1.8.1 '),
     );
 
 
@@ -120,8 +142,6 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
       ', array('!link' => 'http://selectivizr.com')),
     );
 
-
-
     $form['js']['nuke'] = array(
         '#type'          => 'fieldset',
         '#title'         => '&#9985; ' . t('Remove .js files'),
@@ -129,7 +149,6 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
         '#collapsible' => TRUE,
         '#collapsed' => FALSE
     );
-
 
     $form['js']['nuke']['mothership_js_nuke_module'] = array(
        '#type'          => 'checkbox',
@@ -298,30 +317,19 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
     '#collapsed'    => FALSE,
   );
 
-  $form['css']['nuke']['mothership_css_nuke_book'] = array(
-     '#type'          => 'checkbox',
-     '#title'         => t('change book.css & use contextual .base.css & .theme.css'),
-     '#default_value' => theme_get_setting('mothership_css_nuke_book')
-   );
-
-  $form['css']['nuke']['mothership_css_nuke_contextual'] = array(
-     '#type'          => 'checkbox',
-     '#title'         => t('change contextual.css & use contextual .base.css & .theme.css'),
-     '#default_value' => theme_get_setting('mothership_css_nuke_contextual')
-   );
   $form['css']['nuke']['mothership_css_nuke_theme'] = array(
      '#type'          => 'checkbox',
-     '#title'         => t('Remove .theme.css'),
+     '#title'         => t('Remove [foo].theme.css'),
      '#default_value' => theme_get_setting('mothership_css_nuke_theme')
    );
   $form['css']['nuke']['mothership_css_nuke_admin'] = array(
      '#type'          => 'checkbox',
-     '#title'         => t('Remove .admin.css'),
+     '#title'         => t('Remove [foo].admin.css'),
      '#default_value' => theme_get_setting('mothership_css_nuke_admin')
    );
   $form['css']['nuke']['mothership_css_nuke_module_contrib'] = array(
      '#type'          => 'checkbox',
-     '#title'         => t('Remove .css from contrib modules (sites/all/modules/xxx etc)'),
+     '#title'         => t('Remove the css from contrib modules (sites/all/modules/xxx etc)'),
      '#default_value' => theme_get_setting('mothership_css_nuke_module_contrib')
    );
   $form['css']['nuke']['mothership_css_nuke_module_all'] = array(
@@ -330,6 +338,14 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
      '#description'   => t('keeps the base.css, contextual, overlay, system & toolbar'),
      '#default_value' => theme_get_setting('mothership_css_nuke_module_all')
    );
+
+  $form['css']['nuke']['mothership_css_nuke_book'] = array(
+     '#type'          => 'checkbox',
+     '#title'         => t('change book.css & .base.css & .theme.css'),
+     '#default_value' => theme_get_setting('mothership_css_nuke_book')
+   );
+
+
   $form['css']['nuke']['mothership_css_nuke_systemtoolbar'] = array(
      '#type'          => 'checkbox',
      '#title'         => t('Remove toolbar css'),
@@ -489,7 +505,7 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
     '#title'         => t('Remove .node-type'),
     '#default_value' => theme_get_setting('mothership_classes_body_nodetype')
   );
-  
+
 
 
 
@@ -921,6 +937,22 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
     '#default_value' => theme_get_setting('mothership_classes_view_row_rename')
   );
 
+    //---------------- Panels
+  $form['classes']['panels'] = array(
+    '#type'          => 'fieldset',
+    '#title'         => t('Panels'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+  $form['classes']['panels']['panels_seperator'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Remove the div .panel-seperator'),
+    '#description'   => t(''),
+    '#default_value' => theme_get_setting('mothership_panels_seperator')
+  );
+
+
   //---------------- misc
   $form['misc'] = array(
     '#type'          => 'fieldset',
@@ -971,7 +1003,7 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
   $form['misc']['mothership_goodies_login'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('<del>Alternative</del> Better! user login block'),
-    '#description'   => t('Changes the design of the login block: puts register link first, then the username / password, then forgot password & last submit button'),
+    '#description'   => t('Changes the design of the login block: Register link first, then the username & password, then forgot password & last submit button. Removes the tabs as well'),
     '#default_value' => theme_get_setting('mothership_goodies_login'),
   );
 
@@ -992,7 +1024,7 @@ function mothership_form_system_theme_settings_alter(&$form, $form_state) {
     '#description'   => t('meta name="MobileOptimized" content="width" + meta name="HandheldFriendly" content="true" '),
   );
 
-  
+
   $form['mobile']['mothership_viewport'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Standard Viewport'),
