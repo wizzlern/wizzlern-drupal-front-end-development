@@ -67,6 +67,19 @@ function base2013_content_block_info_alter(&$blocks, $theme, $code_blocks) {
 }
 
 /**
+ * Implements hook_system_info_alter()
+ *
+ * Ensure that a theme has a "navigation" region. This makes sure that the
+ * navigation view can be placed in this region.
+ */
+function base2013_content_system_info_alter(&$info, $file) {
+
+  if (isset($info['regions']) && !isset($info['regions']['navigation'])) {
+    $info['regions'] = array('navigation' => t('Navigation')) + $info['regions'];
+  }
+}
+
+/**
  * Implements hook_views_api().
  */
 function base2013_content_views_api() {
