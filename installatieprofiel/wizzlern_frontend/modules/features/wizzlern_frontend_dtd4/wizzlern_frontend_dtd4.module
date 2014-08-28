@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Wizzlern Architect DTD track 2 feature.
+ */
+
+include_once 'wizzlern_frontend_dtd4.features.inc';

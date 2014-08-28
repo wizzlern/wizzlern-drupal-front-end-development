@@ -37,4 +37,4 @@ dependencies[] = strongarm
 dependencies[] = wizzlern_frontend_base
 
 ; Custom modules
-; dependencies[] = base2013_content
+dependencies[] = base2013_content
