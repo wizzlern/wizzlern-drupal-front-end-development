@@ -24,6 +24,64 @@ function base2013_content_install() {
   );
   image_effect_save($effect);
 
+  // Create 'Base 2013 intro' content type if it does not yet exist.
+  if (!array_key_exists('base2013_intro', node_type_get_names())) {
+    $type = array(
+      'type' => 'base2013_intro',
+      'name' => st('Base 2013 Intro'),
+      'description' => st('Use <em>Base 2013 Intro</em> for front page introduction text.'),
+      'base' => 'node_content',
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+      'title_label' => 'Title'
+    );
+
+    $type = node_type_set_defaults($type);
+    node_add_body_field($type);
+    node_type_save($type);
+  }
+
+  // Create 'Base 2013 intro' content.
+  $intros = array(
+    array(
+      'title' => t('Photo Community'),
+      'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra, lacus id interdum ultrices, elit metus semper tellus, vel lacinia libero purus vitae risus.',
+    ),
+    array(
+      'title' => t('Upload Photos'),
+      'content' => 'Vivamus tortor tellus, rutrum sit amet mollis vel, imperdiet consectetur orci. Mauris pharetra congue enim, et sagittis lectus congue ut. Cum sociis natoque penatibus.',
+    ),
+    array(
+      'title' => t('Video Tutorials'),
+      'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
+    ),
+    array(
+      'title' => t('Contact'),
+      'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
+    ),
+  );
+
+  foreach ($intros as $intro) {
+    $node = new stdClass();
+    $node->title = $intro['title'];
+    $node->type = 'base2013_intro';
+    node_object_prepare($node);
+    $node->language = LANGUAGE_NONE;
+    $node->uid = $GLOBALS['user']->uid;
+    $node->status = 1;
+    $node->promote = 0;
+    $node->comment = 1;
+
+    // Term reference (taxonomy) field
+    $node->body[LANGUAGE_NONE][0] = array(
+      'format' => filter_default_format(),
+      'value' => $intro['content'],
+    );
+    $node = node_submit($node); // Prepare node for saving
+    node_save($node);
+  }
+
   // Create 'base 2013 thumb' content type if it does not yet exist.
   if (!array_key_exists('base2013_thumb', node_type_get_names())) {
     $type = array(
@@ -91,60 +149,6 @@ function base2013_content_install() {
     // Term reference (taxonomy) field
     $node->{$field_name}[LANGUAGE_NONE][0] = (array)$file;
 
-    $node = node_submit($node); // Prepare node for saving
-    node_save($node);
-  }
-
-  // Create 'Base 2013 intro' content type if it does not yet exist.
-  if (!array_key_exists('base2013_intro', node_type_get_names())) {
-    $type = array(
-      'type' => 'base2013_intro',
-      'name' => st('Base 2013 Intro'),
-      'description' => st('Use <em>Base 2013 Intro</em> for front page introduction text.'),
-      'base' => 'node_content',
-      'custom' => 1,
-      'modified' => 1,
-      'locked' => 0,
-      'title_label' => 'Title'
-    );
-
-    $type = node_type_set_defaults($type);
-    node_add_body_field($type);
-    node_type_save($type);
-  }
-
-  // Create 'Base 2013 intro' content.
-  $intros = array(
-    array(
-      'title' => t('Photo Community'),
-      'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra, lacus id interdum ultrices, elit metus semper tellus, vel lacinia libero purus vitae risus.',
-    ),
-    array(
-      'title' => t('Upload Photos'),
-      'content' => 'Vivamus tortor tellus, rutrum sit amet mollis vel, imperdiet consectetur orci. Mauris pharetra congue enim, et sagittis lectus congue ut. Cum sociis natoque penatibus.',
-    ),
-    array(
-      'title' => t('Video Tutorials'),
-      'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
-    ),
-  );
-
-  foreach ($intros as $intro) {
-    $node = new stdClass();
-    $node->title = $intro['title'];
-    $node->type = 'base2013_intro';
-    node_object_prepare($node);
-    $node->language = LANGUAGE_NONE;
-    $node->uid = $GLOBALS['user']->uid;
-    $node->status = 1;
-    $node->promote = 0;
-    $node->comment = 1;
-
-    // Term reference (taxonomy) field
-    $node->body[LANGUAGE_NONE][0] = array(
-      'format' => filter_default_format(),
-      'value' => $intro['content'],
-    );
     $node = node_submit($node); // Prepare node for saving
     node_save($node);
   }
@@ -235,28 +239,29 @@ function base2013_content_install() {
     menu_link_save($item);
   }
 
+  // Add menu items to main menu.
+  $mlids = array();
   for ($i = 1; $i < 5; $i++) {
+    $node = node_load($i);
     $item = array(
       'menu_name' => 'main-menu',
       'weight' => $i,
       'expanded' => 1,
-      'link_title' => 'Menu item ' . $i,
+      'link_title' => $node->title,
       'link_path' => 'node/' . $i,
     );
-    menu_link_save($item);
+    $mlids[] = menu_link_save($item);
   }
-  $plid = db_select('menu_links', 'ml')
-    ->condition('ml.link_title', 'Menu item 1')
-    ->fields('ml', array('mlid'))
-    ->execute()
-    ->fetchField();
+
+  // Add sub menu-items to the first menu-item.
+  $plid = $mlids[0];
   for ($i = 1; $i < 5; $i++) {
     $item = array(
       'menu_name' => 'main-menu',
       'weight' => $i,
       'expanded' => 1,
       'link_title' => 'Sub-menu item ' . $i,
-      'link_path' => 'node/' . $i,
+      'link_path' => 'node/' . $i + 1,
       'plid' => $plid,
     );
     menu_link_save($item);

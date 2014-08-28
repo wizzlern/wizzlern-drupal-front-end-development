@@ -43,6 +43,7 @@ features[filter][] = filtered_html
 features[filter][] = full_html
 features[filter][] = plain_text
 features[menu_custom][] = main-menu
+features[menu_links][] = main-menu_home:<front>
 features[node][] = article
 features[node][] = page
 features[taxonomy][] = tags
