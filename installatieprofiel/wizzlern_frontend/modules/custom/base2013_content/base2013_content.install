@@ -24,10 +24,12 @@ function base2013_content_install() {
   );
   image_effect_save($effect);
 
-  if (!in_array('base2013_thumb', node_type_get_names())) {
+  // Create 'base 2013 thumb' content type if it does not yet exist.
+  if (!array_key_exists('base2013_thumb', node_type_get_names())) {
     $type = array(
       'type' => 'base2013_thumb',
       'name' => st('Base 2013 Thumb'),
+      'description' => st('Use <em>Base 2013 Thumb</em> for front page photos.'),
       'base' => 'node_content',
       'custom' => 1,
       'modified' => 1,
@@ -64,6 +66,7 @@ function base2013_content_install() {
     field_create_instance($instance);
   }
 
+  // Create 'Base 2013 thumb' content.
   $path = drupal_get_path('module', 'base2013_content') . '/images/thumbs';
   $files = file_scan_directory($path, '/.*\.jpg$/');
 
@@ -92,11 +95,12 @@ function base2013_content_install() {
     node_save($node);
   }
 
-
-  if (!in_array('base2013_intro', node_type_get_names())) {
+  // Create 'Base 2013 intro' content type if it does not yet exist.
+  if (!array_key_exists('base2013_intro', node_type_get_names())) {
     $type = array(
       'type' => 'base2013_intro',
       'name' => st('Base 2013 Intro'),
+      'description' => st('Use <em>Base 2013 Intro</em> for front page introduction text.'),
       'base' => 'node_content',
       'custom' => 1,
       'modified' => 1,
@@ -109,6 +113,7 @@ function base2013_content_install() {
     node_type_save($type);
   }
 
+  // Create 'Base 2013 intro' content.
   $intros = array(
     array(
       'title' => t('Photo Community'),
@@ -144,12 +149,12 @@ function base2013_content_install() {
     node_save($node);
   }
 
-
-
-  if (!in_array('article', node_type_get_names())) {
+  // Create 'article' content type if it does not yet exist.
+  if (!array_key_exists('article', node_type_get_names())) {
     $type = array(
       'type' => 'article',
       'name' => st('Article'),
+      'description' => st('Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'),
       'base' => 'node_content',
       'custom' => 1,
       'modified' => 1,
@@ -162,6 +167,7 @@ function base2013_content_install() {
     node_type_save($type);
   }
 
+  // Create 'article' content.
   $articles = array(
     array(
       'title' => t('Lorem Ipsum'),
@@ -193,7 +199,7 @@ function base2013_content_install() {
     node_save($node);
   }
 
-
+  // Create 'Base 2013 social' menu.
   $menu = array(
     'menu_name' => 'menu_base2013_social_menu',
     'title' => 'Base 2013 Social Menu',
