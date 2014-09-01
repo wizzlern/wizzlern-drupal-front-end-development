@@ -162,6 +162,12 @@ function wizzlern_frontend_install_tasks() {
     'wizzlern_frontend_users' => array(
       'display' => FALSE,
     ),
+    'wizzlern_frontend_users' => array(
+      'display' => FALSE,
+    ),
+    'wizzlern_frontend_content' => array(
+      'display' => FALSE,
+    ),
   );
 }
 
@@ -190,4 +196,11 @@ function wizzlern_frontend_users() {
     'roles' => array($role->rid => $role->name),
   );
   user_save($user, $fields);
+}
+
+/*
+ * Install task callback: Add content.
+ */
+function wizzlern_frontend_content() {
+  module_enable(array('base2013_content'));
 }

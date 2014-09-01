@@ -6,12 +6,18 @@
  *
  * @name Base 2013 Content
  * @author Philip Vergunst
+ * @author Erik Stielstra
  */
 
 /**
  *
  */
 function base2013_content_install() {
+
+  base_2013_disable_block('system', 'powered-by');
+  base_2013_disable_block('system', 'navigation');
+  base_2013_disable_block('search', 'form');
+  base_2013_disable_block('user', 'login');
 
   $style = image_style_save(array('name' => 'base2013_thumb'));
   $effect = array(
@@ -56,10 +62,10 @@ function base2013_content_install() {
       'title' => t('Video Tutorials'),
       'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
     ),
-    array(
-      'title' => t('Contact'),
-      'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
-    ),
+//    array(
+//      'title' => t('Contact'),
+//      'content' => 'Sed vitae nisi leo. Nulla tincidunt, turpis non gravida pharetra, diam sapien posuere massa, non luctus leo mauris at sapien. Donec ut fermentum eros.',
+//    ),
   );
 
   foreach ($intros as $intro) {
@@ -266,4 +272,22 @@ function base2013_content_install() {
     );
     menu_link_save($item);
   }
+}
+
+/**
+ * Disables a block in bartik and base2013 theme.
+ *
+ * @param $module
+ *   Block's module.
+ * @param $delta
+ *   Block's delta.
+ */
+function base_2013_disable_block($module, $delta) {
+  db_update('block')
+    ->fields(array('region' => -1))
+    ->fields(array('status' => 0))
+    ->condition('module', $module)
+    ->condition('delta', $delta)
+    ->condition('theme', array('bartik', 'base2013'))
+    ->execute();
 }

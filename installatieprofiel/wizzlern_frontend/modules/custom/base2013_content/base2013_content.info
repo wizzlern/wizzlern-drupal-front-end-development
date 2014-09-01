@@ -5,6 +5,7 @@ version = VERSION
 core = 7.x
 package = Wizzlern
 
+dependencies[] = block
 dependencies[] = menu
 dependencies[] = views
 dependencies[] = image

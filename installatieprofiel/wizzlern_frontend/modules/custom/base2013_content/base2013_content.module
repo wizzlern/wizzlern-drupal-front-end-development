@@ -38,31 +38,13 @@ function base2013_content_block_info_alter(&$blocks, $theme, $code_blocks) {
   }
   if (!empty($blocks['menu']['menu_base2013_social_menu'])) {
     $blocks['menu']['menu_base2013_social_menu']['region'] = 'footer';
-    $blocks['menu']['menu_base2013_social_menu']['weight'] = 10;
     $blocks['menu']['menu_base2013_social_menu']['status'] = 1;
     $blocks['menu']['menu_base2013_social_menu']['title'] = '<none>';
   }
   if (!empty($blocks['system']['main-menu'])) {
     $blocks['system']['main-menu']['region'] = 'navigation';
-    $blocks['system']['main-menu']['weight'] = 10;
     $blocks['system']['main-menu']['status'] = 1;
     $blocks['system']['main-menu']['title'] = '<none>';
-  }
-  if (!empty($blocks['system']['powered-by'])) {
-    $blocks['system']['powered-by']['region'] = -1;
-    $blocks['system']['powered-by']['status'] = 0;
-  }
-  if (!empty($blocks['system']['navigation'])) {
-    $blocks['system']['navigation']['region'] = -1;
-    $blocks['system']['navigation']['status'] = 0;
-  }
-  if (!empty($blocks['search']['form'])) {
-    $blocks['search']['form']['region'] = -1;
-    $blocks['search']['form']['status'] = 0;
-  }
-  if (!empty($blocks['user']['login'])) {
-    $blocks['user']['login']['region'] = -1;
-    $blocks['user']['login']['status'] = 0;
   }
 }
 
