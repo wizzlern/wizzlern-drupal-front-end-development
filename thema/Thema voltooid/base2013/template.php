@@ -84,7 +84,8 @@ function base2013_preprocess_region(&$variables) {
  * Override or insert variables into the node template.
  */
 function base2013_preprocess_node(&$variables) {
-  if (!$variables['page']) {
+  // Add classes to article teasers on the front page.
+  if (!$variables['page'] && $variables['type'] == 'article' && $variables['is_front']) {
     $variables['classes_array'][] = 'six';
     $variables['classes_array'][] = 'columns';
   }
