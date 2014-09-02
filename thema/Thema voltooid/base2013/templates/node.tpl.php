@@ -76,6 +76,10 @@
  * @see template_preprocess()
  * @see template_preprocess_node()
  * @see template_process()
+ *
+ * Changes:
+ *  - Wrapper <div> changed to <article>
+ *  - <div class="panel"> added for teaser view.
  */
 ?>
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
