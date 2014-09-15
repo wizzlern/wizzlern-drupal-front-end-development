@@ -203,4 +203,31 @@ function wizzlern_frontend_users() {
  */
 function wizzlern_frontend_content() {
   module_enable(array('base2013_content'));
+  wizzlern_frontend_create_nodes('content', 'content.php');
+}
+
+/**
+ * Create node content.
+ *
+ * @param string $dir
+ *   Directory containing content files. Relative to current directory.
+ * @param string $ext
+ *   Content file extension.
+ *
+ * @throws Exception
+ *   Exception when node format is invalid.
+ */
+function wizzlern_frontend_create_nodes($dir = 'content', $ext = 'content.php') {
+  $path = dirname(__FILE__) . '/' . $dir;
+  $files = file_scan_directory($path, "@\.${ext}$@");
+  asort($files);
+
+  foreach ($files as $file) {
+    ob_start();
+    include $path . '/' . $file->filename;
+    ob_end_clean();
+    if (isset($node)) {
+      node_save($node);
+    }
+  }
 }
