@@ -1,6 +1,6 @@
 name = Wizzlern Front-end Install Profile
 description = "Install Profile for Wizzlern's Front-end Development training"
-version = 7.x-1.x-dev
+version = 7.x-1.0
 core = 7.x
 
 ; Core modules

@@ -1,7 +1,7 @@
 ; $Id$
 name = Base 2013 Content
 description = Generates content for the Base 2013 Theme
-version = VERSION
+version = 7.x-1.0
 core = 7.x
 package = Wizzlern
 
